@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class Timer : MonoBehaviour
 {
     Text text;
     public GameObject panel;
-    private float gameTime = 15*60f;
-    public GameObject Schet;
-    private int i = 0;
+    public float gameTime = 15*60f;
+    public float time2;
+
+    public UnityEvent CounterTik;
+
     void Start()
     {
         text = panel.GetComponentInChildren<Text>();
+        time2 = gameTime;
     }
 
    
@@ -21,11 +25,11 @@ public class Timer : MonoBehaviour
        
         if (gameTime > 0)
         {
-            gameTime -= Time.deltaTime;
+            time2 -= Time.deltaTime;
 
         }
 
-        int seconds = (int)gameTime;
+        int seconds = (int)time2;
         int min = seconds / 60;
         int sec = seconds % 60;
 
@@ -35,8 +39,11 @@ public class Timer : MonoBehaviour
             text.text += "0";
         text.text += sec.ToString();
 
-        if (gameTime <= 0)
-            gameTime = 60 * 15f;
+        if (time2 <= 0)
+        {
+            time2 = gameTime;
+            CounterTik.Invoke();
+        }
 
         //string tmp = gameTime.ToString();
         //text.text += (tmp.Split(','))[0];
